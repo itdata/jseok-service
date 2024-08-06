@@ -585,7 +585,55 @@ ApplicationContext 会在启动时创建延迟初始化的 bean，
 ```
 
 6. 容器扩展点，集成接口。
+- BeanPostProcessor和Ordered接口。BeanFactoryPostProcesseor和Ordered接口
+- 关于属性占位符
+```
+<bean
+class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+  <property name="locations" value="classpath:com/something/jdbc.properties"/>
+</bean>
+<bean id="dataSource" destroy-method="close"
+  class="org.apache.commons.dbcp.BasicDataSource">
+  <property name="driverClassName" value="${jdbc.driverClassName}"/>
+  <property name="url" value="${jdbc.url}"/>
+  <property name="username" value="${jdbc.username}"/>
+  <property name="password" value="${jdbc.password}"/>
+</bean>
 
-- BeanPostProcessor和Ordered接口。
+<context:property-placeholder location="classpath:com/something/jdbc.properties"/>
+```
+- 查看容器实际的FactoryBean，而不是生产的Bean。使用getBean("id"),返回FactoryBean生产的Bean，而getBean("&id"),返回FactoryBean实例对象本身。
+7. 基于Java注解的容器配置
+- <context:annotation-config/> 隐式的注册了以下处理器。开启注解配置以使用Java注解。
+  * ConfigurationClassPostProcessor
+  * AutowiredAnnotationBeanPostProcessor
+  * CommonAnnotationBeanPostProcessor
+  * PersistenceAnnotationBeanPostProcessor
+  * EventListenerMethodProcessor
+- @Required 注解和RequiredAnnotationBeanPostProcessor已经被弃用。应该使用构造方法或@PostConstruct方法
+- @Autowired 能使用@Autowired的地方能被@Inject代替。   
+可在构造函数、setter方法、任意方法、字段、数组集合容器上使用  
+如果只有一个构造函数则不需要使用该注解，如果有多个构造函数必须指示容器使用那个函数。  
+当没有匹配类型则自动装配失败，数组容器至少应该有一个匹配的元素。使用@Autowired(required = false)使容器跳过不满足的注入点。  
+当有多个构造函数时，一个构造函数声明@Autowired(required = true),则其余的构造函数必须声明为@Autowired(required = false).
+- 使用Java8的新特性和@Nullable,非必须注入依赖。
+```
+public class SimpleMovieLister {
+  @Autowired
+  public void setMovieFinder(Optional<MovieFinder> movieFinder) {
+  ...
+  }
+}
 
-7. 
+public class SimpleMovieLister {
+  @Autowired
+  public void setMovieFinder(@Nullable MovieFinder movieFinder) {
+  ...
+  }
+}
+
+```
+- @Autowired可用于BeanFactory, ApplicationContext, Environment, ResourceLoader, ApplicationEventPublisher, and
+  MessageSource.解析依赖的接口或他们的扩展接口。
+- 不能将@Autowired用于BeanPostProcessor或BeanFactoryPostProcessor类型
+8. 

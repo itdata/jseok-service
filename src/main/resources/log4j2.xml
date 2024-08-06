@@ -22,6 +22,9 @@
 	</Appenders>
 
 	<Loggers>
+		<logger name="org.springframework.security" level="DEBUG">
+			<AppenderRef ref="FileLog" />
+		</logger>
 		<Logger name="broccoli" level="debug" additivity="false">
 			<AppenderRef ref="FileLog" />
 		</Logger>
