@@ -11,13 +11,14 @@
 		https://www.springframework.org/schema/context/spring-context.xsd">
 
     <security:debug/>
-
+    <context:annotation-config/>
     <!--    <security:http pattern="index.jsp" security="none"/>-->
 
     <context:component-scan base-package="cn.jseok.platform.security"/>
 
-    <security:http pattern="/**">
-        <security:custom-filter position="FORM_LOGIN_FILTER" ref="jseokLogin"/>
+    <security:http auto-config="false" entry-point-ref="loginEntryPoint">
+        <security:intercept-url pattern="/**"/>
+        <security:custom-filter position="FORM_LOGIN_FILTER" ref="jseokUsernamePasswordAuthenticationFilter"/>
     </security:http>
 
 <!--    <security:http auto-config="true" pattern="/**">-->
@@ -38,5 +39,9 @@
         </security:authentication-provider>
     </security:authentication-manager>
 
-
+    <bean id="loginEntryPoint"
+          class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+        <!-- 默认登录页的url -->
+        <constructor-arg value="/logins" />
+    </bean>
 </beans>
