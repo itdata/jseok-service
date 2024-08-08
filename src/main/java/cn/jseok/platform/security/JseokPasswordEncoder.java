@@ -1,5 +1,6 @@
 package cn.jseok.platform.security;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class JseokPasswordEncoder implements PasswordEncoder {
@@ -16,6 +17,7 @@ public class JseokPasswordEncoder implements PasswordEncoder {
 
     @Override
     public String encode(CharSequence rawPassword) {
-        return "";
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.encode(rawPassword);
     }
 }
