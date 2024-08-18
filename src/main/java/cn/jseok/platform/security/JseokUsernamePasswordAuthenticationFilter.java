@@ -24,7 +24,7 @@ public class JseokUsernamePasswordAuthenticationFilter extends AbstractAuthentic
 
     private boolean postOnly = true;
 
-    private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/index.jsp", "GET");
+    private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login", "POST");
 
     public JseokUsernamePasswordAuthenticationFilter() {
         super(DEFAULT_ANT_PATH_REQUEST_MATCHER);

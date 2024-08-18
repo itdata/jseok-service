@@ -1,8 +1,13 @@
 package cn.jseok.platform.security;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class JseokUserDetailsService implements UserDetailsService {
 
@@ -10,6 +15,11 @@ public class JseokUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+        jseokUserDetails = new JseokUserDetails();
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("ROLE_USER");
+        grantedAuthorities.add(simpleGrantedAuthority);
+        jseokUserDetails.setAuthorities(grantedAuthorities);
         return jseokUserDetails;
     }
 }

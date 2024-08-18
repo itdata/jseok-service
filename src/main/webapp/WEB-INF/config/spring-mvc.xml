@@ -9,6 +9,6 @@
 
     <context:component-scan base-package="cn.jseok.**"/>
     <mvc:annotation-driven/>
-
+    <mvc:default-servlet-handler/>
 
 </beans>

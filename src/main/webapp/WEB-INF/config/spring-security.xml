@@ -12,47 +12,80 @@
 
     <security:debug/>
     <context:annotation-config/>
-    <bean id="loginEntryPoint"
+
+    <bean id="loginUrlAuthenticationEntryPoint"
           class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
-        <!-- 默认登录页的url -->
-        <constructor-arg value="/index.jsp"/>
+        <constructor-arg name="loginFormUrl" value="/index.jsp"/>
     </bean>
 
 
-    <bean id="authenticationProvider" class="cn.jseok.platform.security.JseokAuthenticationProvider">
-
-
+    <bean id="jseokUserDetailsService"
+          class="cn.jseok.platform.security.JseokUserDetailsService">
     </bean>
 
-    <bean id="successHandler" class="cn.jseok.platform.security.JseokAuthenticationSuccessHandler">
+    <bean id="jseokPasswordEncoder"
+          class="cn.jseok.platform.security.JseokPasswordEncoder">
+    </bean>
 
+    <bean id="daoAuthenticationProvider"
+          class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <property name="userDetailsService" ref="jseokUserDetailsService"/>
+        <property name="passwordEncoder" ref="jseokPasswordEncoder"/>
+    </bean>
+
+
+    <bean id="anonymousAuthenticationProvider"
+          class="org.springframework.security.authentication.AnonymousAuthenticationProvider">
+        <constructor-arg name="key" value="admin"/>
+    </bean>
+
+    <bean id="rememberMeAuthenticationProvider"
+          class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+        <constructor-arg name="key" value="admin"/>
+    </bean>
+
+
+    <bean id="forwardAuthenticationSuccessHandler"
+          class="org.springframework.security.web.authentication.ForwardAuthenticationSuccessHandler">
+        <constructor-arg name="forwardUrl" value="/index.html"/>
 
     </bean>
-    <bean id="failureHandler" class="cn.jseok.platform.security.JseokAuthenticationFailureHandler">
-
+    <bean id="forwardAuthenticationFailureHandler"
+          class="org.springframework.security.web.authentication.ForwardAuthenticationFailureHandler">
+        <constructor-arg name="forwardUrl" value="/failure.html"/>
 
     </bean>
-    <bean id="authenticationManager" class="cn.jseok.platform.security.JesokAuthenticationManager">
+    <bean id="providerManager" class="org.springframework.security.authentication.ProviderManager">
         <constructor-arg name="providers">
             <list>
-                <ref bean="authenticationProvider"/>
+                <ref bean="daoAuthenticationProvider"/>
+                <ref bean="rememberMeAuthenticationProvider"/>
+                <ref bean="anonymousAuthenticationProvider"/>
             </list>
         </constructor-arg>
     </bean>
 
 
-    <bean id="jseokUsernamePasswordAuthenticationFilter"
-          class="cn.jseok.platform.security.JseokUsernamePasswordAuthenticationFilter">
-        <property name="authenticationSuccessHandler" ref="successHandler"/>
-        <property name="authenticationFailureHandler" ref="failureHandler"/>
-        <property name="authenticationManager" ref="authenticationManager"/>
+    <bean id="usernamePasswordAuthenticationFilter"
+          class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+        <property name="authenticationSuccessHandler" ref="forwardAuthenticationSuccessHandler"/>
+        <property name="authenticationFailureHandler" ref="forwardAuthenticationFailureHandler"/>
+        <property name="authenticationManager" ref="providerManager"/>
+    </bean>
+    <bean id="authorityAuthorizationManager"
+          class="org.springframework.security.authorization.AuthorityAuthorizationManager">
+        <constructor-arg value="ROLE_"/>
     </bean>
 
 
     <security:http pattern="/index.jsp" security="none"/>
-    <security:http auto-config="false" entry-point-ref="loginEntryPoint" authentication-manager-ref="authenticationManager">
+
+    <security:http auto-config="false" entry-point-ref="loginUrlAuthenticationEntryPoint"
+                   authentication-manager-ref="providerManager"
+                   authorization-manager-ref="authorityAuthorizationManager">
+        <security:csrf disabled="true"/>
         <security:intercept-url pattern="/**"/>
-        <security:custom-filter position="FORM_LOGIN_FILTER" ref="jseokUsernamePasswordAuthenticationFilter"/>
+        <security:custom-filter position="FORM_LOGIN_FILTER" ref="usernamePasswordAuthenticationFilter"/>
     </security:http>
 
 

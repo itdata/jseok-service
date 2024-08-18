@@ -12,5 +12,7 @@ public class JseokAuthenticationFailureHandler implements AuthenticationFailureH
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 
+        request.getRequestDispatcher("/test.html").forward(request, response);
+
     }
 }

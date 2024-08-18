@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		https://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/security
+		https://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/context
+		https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <security:debug/>
+    <context:annotation-config/>
+    <bean id="loginEntryPoint" class="cn.jseok.platform.security.JseokAuthenticaitonEntryPoint">
+
+    </bean>
+
+
+    <bean id="authenticationProvider" class="cn.jseok.platform.security.JseokAuthenticationProvider">
+
+
+    </bean>
+
+    <bean id="successHandler" class="cn.jseok.platform.security.JseokAuthenticationSuccessHandler">
+
+
+    </bean>
+    <bean id="failureHandler" class="cn.jseok.platform.security.JseokAuthenticationFailureHandler">
+
+
+    </bean>
+    <bean id="authenticationManager" class="cn.jseok.platform.security.JesokAuthenticationManager">
+        <constructor-arg name="providers">
+            <list>
+                <ref bean="authenticationProvider"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+
+    <bean id="jseokUsernamePasswordAuthenticationFilter"
+          class="cn.jseok.platform.security.JseokUsernamePasswordAuthenticationFilter">
+        <property name="authenticationSuccessHandler" ref="successHandler"/>
+        <property name="authenticationFailureHandler" ref="failureHandler"/>
+        <property name="authenticationManager" ref="authenticationManager"/>
+    </bean>
+
+
+    <security:http pattern="/loginw" security="none"/>
+    <security:http pattern="/test.html" security="none"/>
+    <security:http auto-config="false" entry-point-ref="loginEntryPoint"
+                   authentication-manager-ref="authenticationManager">
+        <security:intercept-url pattern="/**"/>
+        <security:custom-filter position="FORM_LOGIN_FILTER" ref="jseokUsernamePasswordAuthenticationFilter"/>
+    </security:http>
+
+
+</beans>

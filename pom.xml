@@ -10,9 +10,28 @@
     <properties>
         <spring.version>5.3.37</spring.version>
         <security.version>5.8.13</security.version>
-        <hibernate.version>5.5.6</hibernate.version>
+        <hibernate.version>5.6.15.Final</hibernate.version>
     </properties>
     <dependencies>
+        <!-- oracle-->
+        <dependency>
+            <groupId>com.oracle.jdbc</groupId>
+            <artifactId>ojdbc8</artifactId>
+            <version>12.2.0.1</version>
+        </dependency>
+
+        <!-- hibernate-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-c3p0</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
         <!-- spring-->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -35,6 +54,7 @@
             <version>${spring.version}</version>
             <scope>test</scope>
         </dependency>
+
         <!-- spring-security-->
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -46,12 +66,12 @@
             <artifactId>spring-security-config</artifactId>
             <version>${security.version}</version>
         </dependency>
-        <!-- hibernate-->
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>${hibernate.version}</version>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-jose</artifactId>
+            <version>${security.version}</version>
         </dependency>
+
         <!-- log4j-->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
