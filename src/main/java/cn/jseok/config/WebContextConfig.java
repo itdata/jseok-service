@@ -2,14 +2,14 @@ package cn.jseok.config;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import java.beans.PropertyVetoException;
 import java.util.Properties;
@@ -44,7 +44,7 @@ public class WebContextConfig {
         return dataSource;
     }
 
-    @Bean(value = "sessionFactory",destroyMethod = "destroy")
+    @Bean(value = "sessionFactory", destroyMethod = "destroy")
     public LocalSessionFactoryBean createSessionFactory(ComboPooledDataSource dataSource) {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
@@ -52,7 +52,7 @@ public class WebContextConfig {
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle9Dialect");
 //        properties.setProperty("hibernate.show_sql", "true");
-//        properties.setProperty("hibernate.format_sql", "true");
+        properties.setProperty("hibernate.format_sql", "true");
         sessionFactory.setHibernateProperties(properties);
         return sessionFactory;
     }
