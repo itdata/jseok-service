@@ -1,4 +1,4 @@
-package cn.jseok.platform.security;
+package cn.jseok.security;
 
 public class JseokCorsConfigurationSource {
 

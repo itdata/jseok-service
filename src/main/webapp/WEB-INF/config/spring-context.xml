@@ -12,7 +12,7 @@
     <!-- <context:component-scan base-package="cn.jseok.**"/>-->
     <context:annotation-config/>
     <tx:annotation-driven transaction-manager="transactionManager"/>
-    <context:property-placeholder location="/WEB-INF/config/initconfig.properties"/>
+    <context:property-placeholder location="/initconfig.properties"/>
     <!-- 配置数据源 c3p0 -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="${jdbc.driver}"></property>

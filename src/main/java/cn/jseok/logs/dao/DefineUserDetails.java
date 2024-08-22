@@ -1,4 +1,4 @@
-package cn.jseok.platform.logs.dao;
+package cn.jseok.logs.dao;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

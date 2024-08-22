@@ -1,4 +1,4 @@
-package cn.jseok.platform.security;
+package cn.jseok.security;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;

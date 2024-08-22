@@ -1,4 +1,4 @@
-package cn.jseok.platform.security;
+package cn.jseok.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;

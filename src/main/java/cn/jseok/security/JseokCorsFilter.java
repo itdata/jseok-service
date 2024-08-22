@@ -1,4 +1,4 @@
-package cn.jseok.platform.security;
+package cn.jseok.security;
 
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;

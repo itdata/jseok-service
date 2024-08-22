@@ -20,11 +20,11 @@
 
 
     <bean id="jseokUserDetailsService"
-          class="cn.jseok.platform.security.JseokUserDetailsService">
+          class="cn.jseok.security.JseokUserDetailsService">
     </bean>
 
     <bean id="jseokPasswordEncoder"
-          class="cn.jseok.platform.security.JseokPasswordEncoder">
+          class="cn.jseok.security.JseokPasswordEncoder">
     </bean>
 
     <bean id="daoAuthenticationProvider"
@@ -67,7 +67,7 @@
 
 
     <bean id="usernamePasswordAuthenticationFilter"
-          class="cn.jseok.platform.security.JseokUsernamePasswordAuthenticationFilter">
+          class="cn.jseok.security.JseokUsernamePasswordAuthenticationFilter">
         <property name="authenticationSuccessHandler" ref="forwardAuthenticationSuccessHandler"/>
         <property name="authenticationFailureHandler" ref="forwardAuthenticationFailureHandler"/>
         <property name="authenticationManager" ref="providerManager"/>

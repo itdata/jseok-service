@@ -1,4 +1,4 @@
-package cn.jseok.platform.security;
+package cn.jseok.security;
 
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.AuthenticationServiceException;
