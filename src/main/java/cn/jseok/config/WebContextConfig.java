@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -64,4 +65,10 @@ public class WebContextConfig {
         return hibernateTransactionManager;
     }
 
+    @Bean(value = "hibernateTemplate")
+    public HibernateTemplate hibernateTemplate(SessionFactory sessionFactory) {
+        HibernateTemplate hibernateTemplate = new HibernateTemplate(sessionFactory);
+        hibernateTemplate.setSessionFactory(sessionFactory);
+        return hibernateTemplate;
+    }
 }
