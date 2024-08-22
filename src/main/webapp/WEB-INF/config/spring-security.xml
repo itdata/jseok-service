@@ -59,15 +59,15 @@
         <constructor-arg name="providers">
             <list>
                 <ref bean="daoAuthenticationProvider"/>
-                <ref bean="rememberMeAuthenticationProvider"/>
-                <ref bean="anonymousAuthenticationProvider"/>
+                <!--                <ref bean="rememberMeAuthenticationProvider"/>-->
+                <!--                <ref bean="anonymousAuthenticationProvider"/>-->
             </list>
         </constructor-arg>
     </bean>
 
 
     <bean id="usernamePasswordAuthenticationFilter"
-          class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+          class="cn.jseok.platform.security.JseokUsernamePasswordAuthenticationFilter">
         <property name="authenticationSuccessHandler" ref="forwardAuthenticationSuccessHandler"/>
         <property name="authenticationFailureHandler" ref="forwardAuthenticationFailureHandler"/>
         <property name="authenticationManager" ref="providerManager"/>
@@ -76,15 +76,43 @@
           class="org.springframework.security.authorization.AuthorityAuthorizationManager">
         <constructor-arg value="ROLE_"/>
     </bean>
+    <bean id="corsConfigurationSource" class="org.springframework.web.cors.CorsConfiguration">
+        <property name="allowCredentials" value="true"/>
+        <property name="allowedHeaders">
+            <list>
+                <value>*</value>
+            </list>
+        </property>
+        <property name="allowedMethods">
+            <list>
+                <value>*</value>
+            </list>
+        </property>
 
+        <property name="allowedOrigins">
+            <list>
+                <value>http://localhost:3000</value>
+            </list>
+        </property>
+
+    </bean>
+    <bean id="urlBasedCorsConfigurationSource" class="org.springframework.web.cors.UrlBasedCorsConfigurationSource">
+        <property name="corsConfigurations">
+            <map>
+                <entry key="/**" value-ref="corsConfigurationSource"/>
+
+            </map>
+        </property>
+    </bean>
 
     <security:http pattern="/index.jsp" security="none"/>
-
+    <security:http pattern="/user/test" security="none"/>
     <security:http auto-config="false" entry-point-ref="loginUrlAuthenticationEntryPoint"
                    authentication-manager-ref="providerManager"
                    authorization-manager-ref="authorityAuthorizationManager">
         <security:csrf disabled="true"/>
-        <security:intercept-url pattern="/**"/>
+        <security:cors configuration-source-ref="urlBasedCorsConfigurationSource"/>
+        <!--        <security:intercept-url pattern="/SS"/>-->
         <security:custom-filter position="FORM_LOGIN_FILTER" ref="usernamePasswordAuthenticationFilter"/>
     </security:http>
 
