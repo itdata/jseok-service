@@ -9,6 +9,7 @@
 		<property name="security">security</property>
 		<property name="hibernate">hibernate</property>
 		<property name="jseok">jseok</property>
+		<property name="web">web</property>
 	</properties>
 	<Appenders>
 		<Console name="Console" target="SYSTEM_OUT">
@@ -46,9 +47,20 @@
 			</Policies>
 			<DefaultRolloverStrategy max="20" />
 		</RollingRandomAccessFile>
+		<RollingRandomAccessFile name="web" fileName="${log_home}/${web}.log" filePattern="${log_home}/$${date:yyyy-MM}/${web}-%d{yyyy-MM-dd HH-mm}-%i.log">
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="60" />
+				<SizeBasedTriggeringPolicy size="10MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="20" />
+		</RollingRandomAccessFile>
 	</Appenders>
 
 	<Loggers>
+		<logger name="org.springframework.web" level="debug">
+			<AppenderRef ref="web" />
+		</logger>
 		<logger name="org.springframework.security" level="debug">
 			<AppenderRef ref="security" />
 		</logger>
@@ -58,9 +70,9 @@
 		<Logger name="broccoli" level="debug" additivity="false">
 			<AppenderRef ref="jseok" />
 		</Logger>
-		<Logger name="org.hibernate.SQL" level="debug">
-			<AppenderRef ref="hibernate" />
-		</Logger>
+<!--		<Logger name="org.hibernate.SQL" level="debug">-->
+<!--			<AppenderRef ref="hibernate" />-->
+<!--		</Logger>-->
 		<Logger name="org.hibernate" level="debug">
 			<AppenderRef ref="hibernate" />
 		</Logger>

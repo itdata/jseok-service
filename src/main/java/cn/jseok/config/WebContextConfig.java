@@ -9,6 +9,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.beans.PropertyVetoException;
 import java.util.Properties;
@@ -17,7 +18,7 @@ import java.util.Properties;
 //@ImportResource("classpath:classes/initconfig.properties") 只能是xml 文件
 @PropertySource("classpath:/initconfig.properties")
 @EnableTransactionManagement
-@ComponentScan(basePackages = "cn.jseok.logs.**")
+@ComponentScan(basePackages = {"cn.jseok.logs.service", "cn.jseok.logs.bean"})
 public class WebContextConfig {
 
 //    @Value("${jdbc.url}")
@@ -33,8 +34,7 @@ public class WebContextConfig {
 //    private String driverClass;
 
 
-
-    @Bean(value = "dataSource",destroyMethod = "close")
+    @Bean(value = "dataSource", destroyMethod = "close")
     public ComboPooledDataSource createDateSource(Environment env) throws PropertyVetoException {
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
         dataSource.setDriverClass("oracle.jdbc.driver.OracleDriver");
@@ -44,21 +44,22 @@ public class WebContextConfig {
         return dataSource;
     }
 
-    @Bean(value = "sessionFactory")
-    public LocalSessionFactoryBean createSessionFactory(ComboPooledDataSource dataSource){
+    @Bean(value = "sessionFactory",destroyMethod = "destroy")
+    public LocalSessionFactoryBean createSessionFactory(ComboPooledDataSource dataSource) {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
-        Properties properties= new Properties();
-        properties.setProperty("hibernate.dialect","org.hibernate.dialect.Oracle9Dialect");
-        properties.setProperty("hibernate.show_sql","true");
-        properties.setProperty("hibernate.format_sql","true");
+        sessionFactory.setPackagesToScan("cn.jseok.logs.bean");
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle9Dialect");
+//        properties.setProperty("hibernate.show_sql", "true");
+//        properties.setProperty("hibernate.format_sql", "true");
         sessionFactory.setHibernateProperties(properties);
         return sessionFactory;
     }
-    @Bean(value = "transactionManager")
 
-    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory){
-        HibernateTransactionManager hibernateTransactionManager =  new HibernateTransactionManager();
+    @Bean(value = "transactionManager")
+    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
+        HibernateTransactionManager hibernateTransactionManager = new HibernateTransactionManager();
         hibernateTransactionManager.setSessionFactory(sessionFactory);
         return hibernateTransactionManager;
     }
