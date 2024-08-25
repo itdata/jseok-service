@@ -14,7 +14,7 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <context:property-placeholder location="/initconfig.properties"/>
     <!-- 配置数据源 c3p0 -->
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" autowire="byName">
         <property name="driverClass" value="${jdbc.driver}"></property>
         <property name="jdbcUrl" value="${jdbc.url}"></property>
         <property name="user" value="${jdbc.username}"/>

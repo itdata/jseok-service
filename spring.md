@@ -6,6 +6,13 @@
 
 ### 1、container和bean的核心包
 
+
+ClassPathXmlApplicationContext  
+FileSystemXmlApplicationContext  
+GroovyWebApplicationContext  
+AnnotationConfigWebApplicationContext  
+StaticWebApplicationContext  
+XmlWebApplicationContext
 1. org.springframework.beans
 2. org.springframework.context
 3. ApplicationContext是BeanFactory子接口

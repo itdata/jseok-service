@@ -5,12 +5,17 @@ import cn.jseok.logs.service.DefineUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
+
+import static cn.jseok.security.JseokJwt.secretJwt;
 
 @Controller
 @RequestMapping("/user")
@@ -25,10 +30,15 @@ public class UserAction {
         System.out.println("Bean 注入成功");
     }
 
-    @GetMapping(value = "/test", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "/login", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String Test() {
+    public String Test(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 
+        Map<String, String> map = new HashMap<>();
+        map.put("username", "root");
+        map.put("userid", "28302");
+        String jwt = secretJwt(map);
+        httpServletResponse.addHeader("Authorization", "Bearer " + jwt);
         User user = defineUserDetailsService.login();
 
 
@@ -51,5 +61,12 @@ public class UserAction {
     @RequestMapping("/view1")
     public String requestMapping1() {
         return "redirect:/pages/redirecting.html";
+    }
+
+    @RequestMapping(value = "/admin", produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String admin() {
+
+        return "admin";
     }
 }

@@ -8,8 +8,8 @@
     <name>jseok-service Webapp</name>
     <url>https://jseok.cn</url>
     <properties>
-        <spring.version>5.3.37</spring.version>
-        <security.version>5.8.13</security.version>
+        <spring.version>5.3.39</spring.version>
+        <security.version>5.8.14</security.version>
         <hibernate.version>5.6.15.Final</hibernate.version>
     </properties>
     <dependencies>
