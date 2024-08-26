@@ -2,10 +2,12 @@ package cn.jseok.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Set;
 
+@Component
 public class JseokUserDetails implements UserDetails {
 
     private Set<GrantedAuthority> authorities;

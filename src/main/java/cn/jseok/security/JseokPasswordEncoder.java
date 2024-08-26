@@ -2,7 +2,9 @@ package cn.jseok.security;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JseokPasswordEncoder implements PasswordEncoder {
 
     @Override
@@ -12,7 +14,7 @@ public class JseokPasswordEncoder implements PasswordEncoder {
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return true;
+        return false;
     }
 
     @Override

@@ -1,20 +1,16 @@
 package cn.jseok.security;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.nimbusds.jose.util.Base64URL;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.InvalidKeyException;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.MacAlgorithm;
 import io.jsonwebtoken.security.SecureDigestAlgorithm;
-import org.springframework.http.HttpStatus;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -80,7 +76,6 @@ public class JseokJwt {
             Map<String, String> payloadMap = payloads.stream().collect(HashMap::new, (map, entry) -> map.put(entry.getKey(), entry.getValue().toString()), Map::putAll);
             Stream<Map.Entry<String, String>> stream = Stream.concat(headeMap.entrySet().stream(), payloadMap.entrySet().stream());
             jwtMap = stream.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (map1, map2) -> map2));
-            Base64URL encode = Base64URL.encode(claimsJws.getDigest());
             if (payloadMap.containsKey("exp")) {
                 long extTime = Long.parseLong(jwtMap.get("exp"));
                 long curTime = (new Date().getTime()/1000);
